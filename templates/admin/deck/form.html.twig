@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ deckType is defined ? 'Edit DeckType' : 'New DeckType' }}{% endblock %}
+
+{% block body %}
+    <div class="container mt-5">
+        <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h2 class="mb-0">{{ deckType is defined ? '✏️ Edit DeckType' : '➕ New DeckType' }}</h2>
+            </div>
+            <div class="card-body">
+                {{ form_start(form) }}
+                <div class="mb-3">
+                    {{ form_label(form.name, null, {'label_attr': {'class': 'form-label fw-bold'}}) }}
+                    {{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(form.name) }}
+                </div>
+
+                <div class="mb-3">
+                    {{ form_label(form.description, null, {'label_attr': {'class': 'form-label fw-bold'}}) }}
+                    {{ form_widget(form.description, {'attr': {'class': 'form-control', 'rows': 3}}) }}
+                    {{ form_errors(form.description) }}
+                </div>
+
+                <button type="submit" class="btn btn-success">💾 Save Deck</button>
+                {{ form_end(form) }}
+
+                <a href="{{ path('admin_dashboard') }}" class="btn btn-secondary mt-3">⬅ Back to Dashboard</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

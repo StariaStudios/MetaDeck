@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}DeckTypes Dashboard{% endblock %}
+
+{% block body %}
+    <div class="container mt-4">
+        <h1>📚 DeckTypes</h1>
+
+        <a href="{{ path('admin_deck_new') }}" class="btn btn-success mb-3">➕ Add New DeckType</a>
+
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+                <th># Decks</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for deckType in deckTypes %}
+                <tr>
+                    <td>{{ deckType.name }}</td>
+                    <td>{{ deckType.description ?: '-' }}</td>
+                    <td>{{ deckType.decks|length }}</td>
+                    <td>
+                        <a href="{{ path('admin_deck_decklist', {'id': deckType.id}) }}" class="btn btn-primary btn-sm">👁 View Decks</a>
+                        <a href="{{ path('admin_deck_edit', {'id': deckType.id}) }}" class="btn btn-warning btn-sm">✏ Edit</a>
+                        <form method="post" action="{{ path('admin_deck_delete', {'id': deckType.id}) }}" style="display:inline-block;" onsubmit="return confirm('Are you sure?');">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete_decktype' ~ deckType.id) }}">
+                            <button class="btn btn-danger btn-sm">🗑 Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <a href="{{ path('admin_dashboard') }}" class="btn btn-secondary mt-3">⬅ Back to Admin Dashboard</a>
+    </div>
+{% endblock %}

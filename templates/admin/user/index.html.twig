@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Users{% endblock %}
+
+{% block body %}
+    <div class="container mt-4">
+        <h1>👥 Users</h1>
+
+        <a href="{{ path('admin_user_new') }}" class="btn btn-success mb-3">➕ Add New User</a>
+
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Email</th>
+                <th>Roles</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for user in users %}
+                <tr>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.roles|join(', ') }}</td>
+                    <td>
+                        <form method="post" action="{{ path('admin_user_delete', {'id': user.id}) }}" onsubmit="return confirm('Are you sure?');">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete_user' ~ user.id) }}">
+                            <button class="btn btn-danger btn-sm">🗑 Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

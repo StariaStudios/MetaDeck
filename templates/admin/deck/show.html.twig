@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Deck {{ deck.id }}{% endblock %}
+
+{% block body %}
+    <div class="container mt-4">
+        <h1>📋 Deck List</h1>
+        <p><strong>DeckType:</strong> {{ deck.deckType.name }}</p>
+        <p><strong>Player:</strong> {{ deck.player ?: '-' }}</p>
+        <p><strong>Created At:</strong> {{ deck.createdAt|date('Y-m-d H:i') }}</p>
+
+        <hr>
+
+        <h2>Pokémon</h2>
+        <ul>
+            {% set hasPokemon = false %}
+            {% for dc in deck.deckCards %}
+                {% if dc.card and (dc.card.category == 'Pokémon' or dc.card.category == 'Pokemon') %}
+                    {% set hasPokemon = true %}
+                    <li>{{ dc.quantity }} × {{ dc.card.name }} ({{ dc.card.setCode }} {{ dc.card.number }})</li>
+                {% endif %}
+            {% endfor %}
+            {% if not hasPokemon %}
+                <li><em>No Pokémon</em></li>
+            {% endif %}
+        </ul>
+
+        <h2>Trainers</h2>
+        <ul>
+            {% set hasTrainer = false %}
+            {% for dc in deck.deckCards %}
+                {% if dc.card and dc.card.category == 'Trainer' %}
+                    {% set hasTrainer = true %}
+                    <li>{{ dc.quantity }} × {{ dc.card.name }} ({{ dc.card.setCode }} {{ dc.card.number }})</li>
+                {% endif %}
+            {% endfor %}
+            {% if not hasTrainer %}
+                <li><em>No Trainer</em></li>
+            {% endif %}
+        </ul>
+
+        <h2>Energies</h2>
+        <ul>
+            {% set hasEnergy = false %}
+            {% for dc in deck.deckCards %}
+                {% if dc.card and dc.card.category == 'Energy' %}
+                    {% set hasEnergy = true %}
+                    <li>{{ dc.quantity }} × {{ dc.card.name }} ({{ dc.card.setCode }} {{ dc.card.number }})</li>
+                {% endif %}
+            {% endfor %}
+            {% if not hasEnergy %}
+                <li><em>No Energy</em></li>
+            {% endif %}
+        </ul>
+
+        <a href="{{ path('admin_deck_decklist', {'id': deck.deckType.id}) }}" class="btn btn-secondary mt-3">⬅ Back</a>
+    </div>
+{% endblock %}

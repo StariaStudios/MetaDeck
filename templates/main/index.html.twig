@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Home{% endblock %}
+
+{% block body %}
+    <main class="container text-center my-5">
+        <div class="p-5 bg-light rounded shadow-sm">
+            <h1 class="display-4 mb-3">⚡ Welcome to MetaDeck ⚡</h1>
+            <p class="lead mb-4">
+                Explore and analyze Pokémon TCG decks like a pro! 🃏<br>
+                Discover the most popular cards, compare archetypes, and refine your strategy. 🎯
+            </p>
+            <a href="{{ path('deck_index') }}" class="btn btn-primary btn-lg mb-3">Browse Decks 🏆</a>
+            <p class="text-muted">
+                *Admin access required to add or edit decks.*
+            </p>
+        </div>
+
+        <div class="mt-5 row text-center">
+            <div class="col-md-4 mb-4">
+                <div class="p-4 bg-white rounded shadow-sm h-100">
+                    <h3>📊 Stats & Insights</h3>
+                    <p>Check card averages, analyze trends, and optimize your decks.</p>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="p-4 bg-white rounded shadow-sm h-100">
+                    <h3>🃏 Deck Explorer</h3>
+                    <p>Browse decks by archetype, player, or tournament and see which cards shine.</p>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="p-4 bg-white rounded shadow-sm h-100">
+                    <h3>⚡ Fast & Clean</h3>
+                    <p>Simple, responsive interface built to help you focus on your strategy.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock %}

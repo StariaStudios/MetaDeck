@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Import Deck List{% endblock %}
+
+{% block body %}
+    <div class="container mt-4">
+        <h1>📥 Import Deck List for {{ deckType.name }}</h1>
+        <p>Enter the raw deck list below. Pokémon, Trainer and Energy lines will be processed automatically.</p>
+
+        {{ form_start(form) }}
+        <div class="mb-3">
+            {{ form_label(form.player) }}
+            {{ form_widget(form.player, {'attr': {'class': 'form-control', 'placeholder': 'Optional: Player name'}}) }}
+        </div>
+
+        <div class="mb-3">
+            {{ form_label(form.deckText) }}
+            {{ form_widget(form.deckText, {'attr': {'class': 'form-control font-monospace', 'rows': 15, 'placeholder': 'Paste deck list here...'}}) }}
+        </div>
+
+        <button type="submit" class="btn btn-success">✅ Import Deck</button>
+        {{ form_end(form) }}
+
+        <a href="{{ path('admin_dashboard') }}" class="btn btn-secondary mt-3">⬅ Back to Dashboard</a>
+    </div>
+{% endblock %}

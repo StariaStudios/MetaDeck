@@ -1,0 +1,83 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ deckType.name }} Deck{% endblock %}
+
+{% block body %}
+    <div class="container my-5">
+        <h1 class="mb-4">{{ deckType.name }} Deck</h1>
+        <p>Based on <strong>{{ deckType.decks|length }}</strong> analyzed lists.</p>
+        {% if deckType.tournaments|length > 0 %}
+            <p><strong>Tournaments:</strong>
+                <ul>
+                    {% for t in deckType.tournaments %}
+                    <li>{{ t.name }}</li>
+                    {% endfor %}
+                </ul>
+            </p>
+        {% endif %}
+        <hr>
+
+        <h2>Pokémon 🐾 (average)</h2>
+        <div class="row row-cols-1 row-cols-md-2 g-3 mb-4">
+            {% set hasPokemon = false %}
+            {% for item in averages %}
+                {% if item.card and (item.card.category == 'Pokémon' or item.card.category == 'Pokemon') %}
+                    {% set hasPokemon = true %}
+                    <div class="col">
+                        <div class="card h-100 shadow-sm">
+                            <div class="card-body d-flex justify-content-between align-items-center">
+                                <span>{{ item.card.name }} ({{ item.card.setCode }} {{ item.card.number }})</span>
+                                <span class="badge bg-primary fs-6">{{ item.average|number_format(2, '.', ',') }}</span>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+            {% if not hasPokemon %}
+                <p><em>No Pokémon in this deck type.</em></p>
+            {% endif %}
+        </div>
+
+        <h2>Trainers 🎴 (average)</h2>
+        <div class="row row-cols-1 row-cols-md-2 g-3 mb-4">
+            {% set hasTrainer = false %}
+            {% for item in averages %}
+                {% if item.card and item.card.category == 'Trainer' %}
+                    {% set hasTrainer = true %}
+                    <div class="col">
+                        <div class="card h-100 shadow-sm">
+                            <div class="card-body d-flex justify-content-between align-items-center">
+                                <span>{{ item.card.name }} ({{ item.card.setCode }} {{ item.card.number }})</span>
+                                <span class="badge bg-success fs-6">{{ item.average|number_format(2, '.', ',') }}</span>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+            {% if not hasTrainer %}
+                <p><em>No Trainers in this deck type.</em></p>
+            {% endif %}
+        </div>
+
+        <h2>Energies ⚡ (average)</h2>
+        <div class="row row-cols-1 row-cols-md-2 g-3 mb-4">
+            {% set hasEnergy = false %}
+            {% for item in averages %}
+                {% if item.card and item.card.category == 'Energy' %}
+                    {% set hasEnergy = true %}
+                    <div class="col">
+                        <div class="card h-100 shadow-sm">
+                            <div class="card-body d-flex justify-content-between align-items-center">
+                                <span>{{ item.card.name }} ({{ item.card.setCode }} {{ item.card.number }})</span>
+                                <span class="badge bg-warning text-dark fs-6">{{ item.average|number_format(2, '.', ',') }}</span>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+            {% if not hasEnergy %}
+                <p><em>No Energy in this deck type.</em></p>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

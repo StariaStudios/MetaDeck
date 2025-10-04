@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Deck list{% endblock %}
+
+{% block body %}
+    <div class="container mt-4">
+        <h1 class="mb-4">Deck List</h1>
+
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+            {% for deck in decks %}
+                <div class="col">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">{{ deck.name }} Deck</h5>
+                            <p class="card-text flex-grow-1">
+                                {% if deck.description %}
+                                    {{ deck.description }} • {{ deck.decks|length }} lists
+                                {% else %}
+                                    No description • {{ deck.decks|length }} lists
+                                {% endif %}
+                            </p>
+                            <a href="{{ path('deck_show', {'id': deck.id}) }}" class="btn btn-primary mt-auto">See average cards</a>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <p>No available deck.</p>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
