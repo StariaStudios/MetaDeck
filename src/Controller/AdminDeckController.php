@@ -71,7 +71,14 @@ class AdminDeckController extends AbstractController
     public function deleteDeckType(EntityManagerInterface $entityManager, Request $request, int $id): Response
     {
         $deckType = $entityManager->getRepository(DeckType::class)->find($id);
-        if ($this->isCsrfTokenValid('delete'.$deckType->getId(), $request->request->get('_token'))) {
+
+        if ($this->isCsrfTokenValid('delete_decktype'.$deckType->getId(), $request->request->get('_token'))) {
+            foreach ($deckType->getDecks() as $deck) {
+                foreach ($deck->getDeckCards() as $card) {
+                    $entityManager->remove($card);
+                }
+                $entityManager->remove($deck);
+            }
             $entityManager->remove($deckType);
             $entityManager->flush();
             $this->addFlash('success', 'Deck Type deleted!');
@@ -114,13 +121,16 @@ class AdminDeckController extends AbstractController
     }
 
     #[Route('/decklist/{id}/delete', name: 'decklist_delete', methods: ['POST'])]
-    public function deleteDeck(Deck $deck, Request $request, EntityManagerInterface $em): Response
+    public function deleteDeck(int $id, Request $request, EntityManagerInterface $entityManager): Response
     {
-        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+        $deck = $entityManager->getRepository(Deck::class)->find($id);
 
         if ($this->isCsrfTokenValid('delete_deck' . $deck->getId(), $request->request->get('_token'))) {
-            $em->remove($deck);
-            $em->flush();
+            foreach ($deck->getDeckCards() as $card) {
+                $entityManager->remove($card);
+            }
+            $entityManager->remove($deck);
+            $entityManager->flush();
             $this->addFlash('success', 'Deck deleted!');
         }
 

@@ -29,8 +29,6 @@ class AdminUserController extends AbstractController
     #[Route('/new', name: 'new')]
     public function new(Request $request, EntityManagerInterface $entityManager, UserPasswordHasherInterface $hasher): Response
     {
-        $this->denyAccessUnlessGranted('ROLE_ADMIN');
-
         $user = new User();
         $form = $this->createForm(UserType::class, $user);
 
@@ -50,13 +48,14 @@ class AdminUserController extends AbstractController
     }
 
     #[Route('/{id}/delete', name: 'delete', methods: ['POST'])]
-    public function delete(User $user, EntityManagerInterface $em, Request $request): Response
+    public function delete(int $id, EntityManagerInterface $entityManager, Request $request): Response
     {
-        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
+        $user = $entityManager->getRepository(User::class)->find($id);
 
         if ($this->isCsrfTokenValid('delete_user' . $user->getId(), $request->request->get('_token'))) {
-            $em->remove($user);
-            $em->flush();
+            $entityManager->remove($user);
+            $entityManager->flush();
             $this->addFlash('success', 'User deleted!');
         }
 
